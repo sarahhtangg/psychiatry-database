@@ -1,0 +1,138 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2822
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww11520\viewh12440\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 // Create Providers\
+CREATE (dr1:Provider \{id: "DR01", name: "Dr. Aristhone", role: "Psychiatrist", specialty: "Mood Disorders"\})\
+CREATE (dr2:Provider \{id: "DR02", name: "Dr. Vance", role: "Psychiatrist", specialty: "ADHD & Neurodivergence"\})\
+CREATE (th1:Provider \{id: "TH01", name: "Sarah Chen", role: "Therapist", specialty: "CBT"\})\
+CREATE (dr3:Provider \{id: "DR03", name: "Dr. Patel", role: "Psychiatrist", specialty: "Trauma"\})\
+\
+// Create Conditions\
+CREATE (mdd:Condition \{name: "Major Depressive Disorder", icd10_code: "F32.9"\})\
+CREATE (gad:Condition \{name: "Generalized Anxiety Disorder", icd10_code: "F41.1"\})\
+CREATE (adhd:Condition \{name: "ADHD-Combined Type", icd10_code: "F90.2"\})\
+CREATE (bipolar:Condition \{name: "Bipolar I Disorder", icd10_code: "F31.9"\})\
+CREATE (ptsd:Condition \{name: "Post-Traumatic Stress Disorder", icd10_code: "F43.10"\})\
+\
+// Create Symptoms\
+CREATE (s1:Symptom \{description: "Insomnia"\})\
+CREATE (s2:Symptom \{description: "Anhedonia"\})\
+CREATE (s3:Symptom \{description: "Executive Dysfunction"\})\
+CREATE (s4:Symptom \{description: "Panic Attacks"\})\
+CREATE (s5:Symptom \{description: "Fatigue"\})\
+CREATE (s6:Symptom \{description: "Hypervigilance"\})\
+CREATE (s7:Symptom \{description: "Mania"\})\
+CREATE (s8:Symptom \{description: "Brain Fog"\})\
+CREATE (s9:Symptom \{description: "Restlessness"\})\
+CREATE (s10:Symptom \{description: "Intrusive Thoughts"\})\
+CREATE (s11:Symptom \{description: "Weight Fluctuations"\})\
+\
+// Create Medications\
+CREATE (med1:Medication \{name: "Sertraline", class: "SSRI"\})\
+CREATE (med2:Medication \{name: "Methylphenidate", class: "Stimulant"\})\
+CREATE (med3:Medication \{name: "Quetiapine", class: "Antipsychotic"\})\
+CREATE (med4:Medication \{name: "Lithium", class: "Mood Stabilizer"\})\
+CREATE (med5:Medication \{name: "Prazosin", class: "Alpha Blocker"\})\
+\
+// Create Patients and Link Relationships\
+// Patient 1: Comorbid MDD and GAD\
+CREATE (p1:Patient \{id: "P101", name: "Jordan Smith", age: 28, risk_level: "Moderate"\})\
+CREATE (p1)-[:EXHIBITS]->(s1), (p1)-[:EXHIBITS]->(s2), (p1)-[:EXHIBITS]->(s4)\
+CREATE (p1)-[:DIAGNOSED_WITH]->(mdd), (p1)-[:DIAGNOSED_WITH]->(gad)\
+CREATE (dr1)-[:TREATS]->(p1), (th1)-[:COUNSELS]->(p1)\
+CREATE (dr1)-[:PRESCRIBES]->(med1)\
+\
+// Patient 2: ADHD\
+CREATE (p2:Patient \{id: "P102", name: "Alex Rivera", age: 19, risk_level: "Low"\})\
+CREATE (p2)-[:EXHIBITS]->(s3), (p2)-[:EXHIBITS]->(s1)\
+CREATE (p2)-[:DIAGNOSED_WITH]->(adhd)\
+CREATE (dr2)-[:TREATS]->(p2)\
+CREATE (dr2)-[:PRESCRIBES]->(med2)\
+\
+// Patient 3: High Risk MDD\
+CREATE (p3:Patient \{id: "P103", name: "Casey Lee", age: 45, risk_level: "High"\})\
+CREATE (p3)-[:EXHIBITS]->(s2)\
+CREATE (p3)-[:DIAGNOSED_WITH]->(mdd)\
+CREATE (dr1)-[:TREATS]->(p3)\
+CREATE (dr1)-[:PRESCRIBES]->(med3)\
+\
+// Patient 4: Moderate PTSD\
+CREATE (p4:Patient \{id: "P104", name: "Emma Thompson", age: 34, risk_level: "Moderate"\})\
+CREATE (p4)-[:DIAGNOSED_WITH]->(ptsd)\
+CREATE (p4)-[:EXHIBITS]->(s1), (p4)-[:EXHIBITS]->(s6), (p4)-[:EXHIBITS]->(s4), (p4)-[:EXHIBITS]->(s10)\
+CREATE (dr3)-[:TREATS]->(p4), (th1)-[:COUNSELS]->(p4)\
+CREATE (dr3)-[:PRESCRIBES]->(med5)\
+\
+// Patient 5: Low Risk ADHD\
+CREATE (p5:Patient \{id: "P105", name: "Liam Garcia", age: 22, risk_level: "Low"\})\
+CREATE (p5)-[:DIAGNOSED_WITH]->(adhd)\
+CREATE (p5)-[:EXHIBITS]->(s3), (p5)-[:EXHIBITS]->(s8), (p5)-[:EXHIBITS]->(s9)\
+CREATE (dr2)-[:TREATS]->(p5)\
+\
+// Patient 6: High Risk Bipolar\
+CREATE (p6:Patient \{id: "P106", name: "Marcus Johnson", age: 41, risk_level: "High"\})\
+CREATE (p6)-[:DIAGNOSED_WITH]->(bipolar)\
+CREATE (p6)-[:EXHIBITS]->(s1), (p6)-[:EXHIBITS]->(s7), (p6)-[:EXHIBITS]->(s9), (p6)-[:EXHIBITS]->(s3), (p6)-[:EXHIBITS]->(s11)\
+CREATE (dr1)-[:TREATS]->(p6)\
+CREATE (dr1)-[:PRESCRIBES]->(med4)\
+\
+// Patient 7: Low Risk GAD\
+CREATE (p7:Patient \{id: "P107", name: "Sophia Chen", age: 28, risk_level: "Low"\})\
+CREATE (p7)-[:DIAGNOSED_WITH]->(gad)\
+CREATE (p7)-[:EXHIBITS]->(s1), (p7)-[:EXHIBITS]->(s9)\
+CREATE (dr1)-[:TREATS]->(p7), (th1)-[:COUNSELS]->(p7)\
+\
+// Patient 8: High Risk PTSD\
+CREATE (p8:Patient \{id: "P108", name: "David Miller", age: 55, risk_level: "High"\})\
+CREATE (p8)-[:DIAGNOSED_WITH]->(ptsd)\
+CREATE (p8)-[:EXHIBITS]->(s1), (p8)-[:EXHIBITS]->(s6), (p8)-[:EXHIBITS]->(s10), (p8)-[:EXHIBITS]->(s4), (p8)-[:EXHIBITS]->(s2), (p8)-[:EXHIBITS]->(s5)\
+CREATE (dr3)-[:TREATS]->(p8)\
+\
+// Patient 9: Moderate MDD\
+CREATE (p9:Patient \{id: "P109", name: "Olivia Davis", age: 62, risk_level: "Moderate"\})\
+CREATE (p9)-[:DIAGNOSED_WITH]->(mdd)\
+CREATE (p9)-[:EXHIBITS]->(s2), (p9)-[:EXHIBITS]->(s5), (p9)-[:EXHIBITS]->(s11), (p9)-[:EXHIBITS]->(s8)\
+CREATE (dr1)-[:TREATS]->(p9)\
+CREATE (dr1)-[:PRESCRIBES]->(med1)\
+\
+// Patient 10: Low Risk MDD\
+CREATE (p10:Patient \{id: "P110", name: "James Wilson", age: 72, risk_level: "Low"\})\
+CREATE (p10)-[:DIAGNOSED_WITH]->(mdd)\
+CREATE (p10)-[:EXHIBITS]->(s2), (p10)-[:EXHIBITS]->(s5)\
+CREATE (dr1)-[:TREATS]->(p10)\
+\
+// Patient 11: Moderate ADHD\
+CREATE (p11:Patient \{id: "P111", name: "Ava Martinez", age: 19, risk_level: "Moderate"\})\
+CREATE (p11)-[:DIAGNOSED_WITH]->(adhd)\
+CREATE (p11)-[:EXHIBITS]->(s3), (p11)-[:EXHIBITS]->(s8), (p11)-[:EXHIBITS]->(s1), (p11)-[:EXHIBITS]->(s4)\
+CREATE (dr2)-[:TREATS]->(p11), (th1)-[:COUNSELS]->(p11)\
+CREATE (dr2)-[:PRESCRIBES]->(med2)\
+\
+// Patient 12: High Risk GAD + MDD (Comorbid)\
+CREATE (p12:Patient \{id: "P112", name: "Ethan Taylor", age: 31, risk_level: "High"\})\
+CREATE (p12)-[:DIAGNOSED_WITH]->(gad), (p12)-[:DIAGNOSED_WITH]->(mdd)\
+CREATE (p12)-[:EXHIBITS]->(s1), (p12)-[:EXHIBITS]->(s2), (p12)-[:EXHIBITS]->(s4), (p12)-[:EXHIBITS]->(s5), (p12)-[:EXHIBITS]->(s9)\
+CREATE (dr1)-[:TREATS]->(p12)\
+\
+// Patient 13: Moderate Bipolar\
+CREATE (p13:Patient \{id: "P113", name: "Mia Anderson", age: 48, risk_level: "Moderate"\})\
+CREATE (p13)-[:DIAGNOSED_WITH]->(bipolar)\
+CREATE (p13)-[:EXHIBITS]->(s5), (p13)-[:EXHIBITS]->(s8), (p13)-[:EXHIBITS]->(s11)\
+CREATE (dr1)-[:TREATS]->(p13)\
+CREATE (dr1)-[:PRESCRIBES]->(med4)\
+\
+// Patient 14: Low Risk ADHD\
+CREATE (p14:Patient \{id: "P114", name: "Noah Thomas", age: 26, risk_level: "Low"\})\
+CREATE (p14)-[:DIAGNOSED_WITH]->(adhd)\
+CREATE (p14)-[:EXHIBITS]->(s3)\
+CREATE (dr2)-[:TREATS]->(p14)\
+\
+// Patient 15: Moderate PTSD\
+CREATE (p15:Patient \{id: "P115", name: "Isabella Jackson", age: 39, risk_level: "Moderate"\})\
+CREATE (p15)-[:DIAGNOSED_WITH]->(ptsd)\
+CREATE (p15)-[:EXHIBITS]->(s6), (p15)-[:EXHIBITS]->(s10), (p15)-[:EXHIBITS]->(s1)\
+CREATE (dr3)-[:TREATS]->(p15)}
